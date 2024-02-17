@@ -25,6 +25,9 @@ func New(env string) (Logger, error) {
 				Level:     slog.LevelInfo,
 				AddSource: true,
 				ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+					if a.Key == "function" {
+						return slog.Attr{}
+					}
 					if a.Key == slog.SourceKey {
 						source := a.Value.Any().(*slog.Source)
 						source.File = filepath.Base(source.File)
@@ -45,6 +48,9 @@ func New(env string) (Logger, error) {
 				Level:     slog.LevelDebug,
 				AddSource: true,
 				ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+					if a.Key == "function" {
+						return slog.Attr{}
+					}
 					if a.Key == slog.SourceKey {
 						source := a.Value.Any().(*slog.Source)
 						source.File = filepath.Base(source.File)
