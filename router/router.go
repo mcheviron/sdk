@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"slices"
 	"strings"
+	"time"
 )
 
 type Router struct {
@@ -57,4 +58,20 @@ func (r *Router) withMiddlewares(handler http.Handler) http.Handler {
 		handler = middleware(handler)
 	}
 	return handler
+}
+
+func (r *Router) Serve(addr string) error {
+	mux := http.NewServeMux()
+
+	for route, handler := range r.routes {
+		mux.Handle(route, handler)
+	}
+
+	server := &http.Server{
+		ReadTimeout: 45 * time.Second,
+		Addr:        addr,
+		Handler:     mux,
+	}
+
+	return server.ListenAndServe()
 }
