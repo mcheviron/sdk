@@ -2,6 +2,8 @@ package utils
 
 import "slices"
 
+// Filter applies a predicate function to each element in the input slice and returns a new slice
+// containing only the elements for which the predicate function returns true.
 func Filter[T any](s []T, pred func(T) bool) []T {
 	var result []T
 	for _, v := range s {
@@ -12,18 +14,18 @@ func Filter[T any](s []T, pred func(T) bool) []T {
 	return result
 }
 
-func Unique[T comparable](slice []T) []T {
-	seen := make(map[T]struct{})
-	result := make([]T, 0)
-	for _, v := range slice {
-		if _, found := seen[v]; !found {
-			seen[v] = struct{}{}
-			result = append(result, v)
-		}
+// Unique returns a new slice containing unique elements from the input slice.
+// The returned slice will preserve the order of the unique elements.
+func Unique[T comparable](s []T) []T {
+	seen := make(map[T]struct{}, len(s))
+	for _, v := range s {
+		seen[v] = struct{}{}
 	}
-	return result
+	return slices.Clip(Keys(seen))
 }
 
+// Map applies a transformer function to each element in the input slice and returns a new slice
+// containing the results, effictively morphing the input slice.
 func Map[S ~[]E, E any, R any](s S, f func(E) R) []R {
 	result := make([]R, 0, len(s))
 	for i, v := range s {
@@ -32,6 +34,8 @@ func Map[S ~[]E, E any, R any](s S, f func(E) R) []R {
 	return result
 }
 
+// FilterMap applies a function that can error to each element of a slice and returns a new slice
+// of the successful results. Courtesy of Rust
 func FilterMap[S ~[]E, E any, R any](s S, f func(E) (R, error)) []R {
 	result := make([]R, 0, len(s))
 	for _, v := range s {
@@ -43,6 +47,7 @@ func FilterMap[S ~[]E, E any, R any](s S, f func(E) (R, error)) []R {
 	return slices.Clip(result)
 }
 
+// Keys returns a slice of keys from the given map.
 func Keys[K comparable, V any](m map[K]V) []K {
 	keys := make([]K, 0, len(m))
 	for k := range m {
@@ -51,6 +56,7 @@ func Keys[K comparable, V any](m map[K]V) []K {
 	return keys
 }
 
+// Values returns a slice of values from the given map.
 func Values[K comparable, V any](m map[K]V) []V {
 	values := make([]V, 0, len(m))
 	for _, v := range m {
