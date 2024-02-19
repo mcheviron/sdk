@@ -3,6 +3,7 @@ package serde
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -20,9 +21,9 @@ func Encode[T any](w http.ResponseWriter, status int, v T) error {
 
 // Decode decodes the JSON data from the given HTTP request into a value of type T.
 // The generic parameter T needs to be passed while invoking the function.
-func Decode[T any](r *http.Request) (T, error) {
+func Decode[T any](r io.Reader) (T, error) {
 	var v T
-	if err := json.NewDecoder(r.Body).Decode(&v); err != nil {
+	if err := json.NewDecoder(r).Decode(&v); err != nil {
 		return v, fmt.Errorf("decode json: %w", err)
 	}
 	return v, nil
