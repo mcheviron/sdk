@@ -15,12 +15,12 @@ type Logger struct {
 	context     context.Context
 }
 
-func New(env string) (Logger, error) {
+func New(env string) (*Logger, error) {
 	ctx := context.Background()
 
 	switch env {
 	case "prod":
-		return Logger{
+		return &Logger{
 			innerLogger: slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
 				Level:     slog.LevelInfo,
 				AddSource: true,
@@ -43,7 +43,7 @@ func New(env string) (Logger, error) {
 			context: ctx,
 		}, nil
 	case "dev":
-		return Logger{
+		return &Logger{
 			innerLogger: slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
 				Level:     slog.LevelDebug,
 				AddSource: true,
@@ -65,7 +65,7 @@ func New(env string) (Logger, error) {
 			context: ctx,
 		}, nil
 	default:
-		return Logger{}, errors.New("unknown environment")
+		return nil, errors.New("unknown environment")
 	}
 }
 
