@@ -10,7 +10,7 @@ import (
 )
 
 type Server struct {
-	logger.Logger
+	*logger.Logger
 }
 
 func NewDevelopment() (*Server, error) {
