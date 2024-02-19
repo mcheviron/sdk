@@ -19,8 +19,8 @@ func Encode[T any](w http.ResponseWriter, status int, v T) error {
 	return nil
 }
 
-// Decode decodes the JSON data from the given HTTP request into a value of type T.
-// The generic parameter T needs to be passed while invoking the function.
+// Decode decodes JSON data from the given io.Reader into a value of type T.
+// It returns the decoded value and an error if decoding fails.
 func Decode[T any](r io.Reader) (T, error) {
 	var v T
 	if err := json.NewDecoder(r).Decode(&v); err != nil {
