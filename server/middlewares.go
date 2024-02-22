@@ -9,10 +9,10 @@ func (s *Server) LoggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		s.Info("Received request",
 			slog.String("method", r.Method),
-			slog.String("uri", r.URL.Path),
-			slog.String("ip", r.RemoteAddr),
-			slog.String("origin", r.Header.Get("Origin")),
-			slog.String("host", r.Host),
+			slog.String("URI", r.URL.Path),
+			slog.String("IP", r.RemoteAddr),
+			slog.String("ORIGIN", r.Header.Get("Origin")),
+			slog.String("HOST", r.Host),
 		)
 		next.ServeHTTP(w, r)
 	})
