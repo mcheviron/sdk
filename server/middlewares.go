@@ -7,7 +7,13 @@ import (
 
 func (s *Server) LoggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		s.Info("Received request", slog.String("method", r.Method), slog.String("uri", r.URL.Path))
+		s.Info("Received request",
+			slog.String("method", r.Method),
+			slog.String("uri", r.URL.Path),
+			slog.String("ip", r.RemoteAddr),
+			slog.String("origin", r.Header.Get("Origin")),
+			slog.String("host", r.Host),
+		)
 		next.ServeHTTP(w, r)
 	})
 }
