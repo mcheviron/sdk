@@ -17,11 +17,11 @@ func Filter[T any](s []T, pred func(T) bool) []T {
 // Unique returns a new slice containing unique elements from the input slice.
 // The returned slice will preserve the order of the unique elements.
 func Unique[T comparable](s []T) []T {
-	seen := make(map[T]struct{}, len(s))
+	seen := make(map[T]struct{})
 	for _, v := range s {
 		seen[v] = struct{}{}
 	}
-	return slices.Clip(Keys(seen))
+	return Keys(seen)
 }
 
 // Map applies a transformer function to each element in the input slice and returns a new slice
