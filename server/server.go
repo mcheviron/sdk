@@ -72,3 +72,9 @@ func (s *Server) NotFound(w http.ResponseWriter, err error) {
 func (s *Server) InternalServerError(w http.ResponseWriter) {
 	s.response(w, http.StatusInternalServerError, nil)
 }
+
+func (s *Server) String(w http.ResponseWriter, statusCode int, msg string) {
+	w.Header().Set("Content-Type", "text/plain")
+	w.WriteHeader(statusCode)
+	w.Write([]byte(msg))
+}
